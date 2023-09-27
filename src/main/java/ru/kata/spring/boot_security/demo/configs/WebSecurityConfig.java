@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    // аутентификация inMemory
+//     аутентификация inMemory
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
