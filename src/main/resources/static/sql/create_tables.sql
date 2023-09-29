@@ -26,15 +26,15 @@ create table if not exists authorities
     unique (username, authority)
 );
 
-create table if not exists People
-(
-    id        int PRIMARY KEY AUTO_INCREMENT,
-    username  varchar(50)  not null,
-    userage   int          not null,
-    useremail varchar(50)  not null,
-    password  varchar(100) not null,
-    enabled   boolean      not null
-);
+# create table if not exists People
+# (
+#     id        int PRIMARY KEY AUTO_INCREMENT,
+#     username  varchar(50)  not null,
+#     userage   int          not null,
+#     useremail varchar(50)  not null,
+#     password  varchar(100) not null,
+#     enabled   boolean      not null
+# );
 
 
 insert ignore into users (username, userage, useremail, password, enabled)
@@ -46,7 +46,3 @@ values ("user", 23, "luke.skywalker@gmail.com", "{bcrypt}$2a$12$npwjlEUtsgRx4PLx
        ("user6", 900, "yoda@gmail.com", "user6", 1),
        ("user7", 2019, "gandalf@gmail.com", "user7", 1),
        ("user8", 10000, "optimus.prime@gmail.com", "user8", 1);
-
-
-insert into users (username, userage, useremail, password, enabled)
-    value ("oliva", 25, "oliva@gmail.com", "oliva", true);

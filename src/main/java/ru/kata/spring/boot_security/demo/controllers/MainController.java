@@ -19,4 +19,14 @@ public class MainController {
         return "secret :: " + principal.getName();
     }
 
+    @GetMapping("/admins")
+    public String pageForAdmin() {
+        return "ADMIN's Page Here";
+    }
+
+    @GetMapping("/managers")
+    public String pageForManager() {
+        return "MANAGER's Page Here";
+    }
+
 }
