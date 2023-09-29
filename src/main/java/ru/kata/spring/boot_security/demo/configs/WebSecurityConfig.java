@@ -1,7 +1,9 @@
 package ru.kata.spring.boot_security.demo.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,8 +12,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.sql.DataSource;
 
@@ -20,14 +25,21 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final SuccessUserHandler successUserHandler;
+    //    private final SuccessUserHandler successUserHandler;
 //
 //    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
 //        this.successUserHandler = successUserHandler;
 //    }
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
 //        http
 //                .authorizeRequests()
 //                .antMatchers("/", "/index").permitAll()
@@ -47,9 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .logout().logoutSuccessUrl("/");
-
     }
-
 
     //         аутентификация inMemory
 //    @Bean
@@ -80,9 +90,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //JDBC Auth
 
-    @Bean
-    public JdbcUserDetailsManager users(DataSource dataSource) {
-
+//    @Bean
+//    public JdbcUserDetailsManager users(DataSource dataSource) {
+//
 //        UserDetails user = User.builder()
 //                .username("user")
 //                .password("{bcrypt}$2a$12$npwjlEUtsgRx4PLxJXIOI.tMD8178g0kAE2QJPuW0ulKSeA54JhBy")
@@ -100,9 +110,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .password("{bcrypt}$2a$12$Nuh5uUZjcLTifZf5GNND5uabPgiSalMBZ3y7miZF5/CxAaJzd07Ni")
 //                .roles("MANAGER", "ADMIN", "USER").authorities("AUTH_MANAGERS")
 //                .build();
-
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-
+//
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+//
 //        if (jdbcUserDetailsManager.userExists(user.getUsername())) {
 //            jdbcUserDetailsManager.deleteUser(user.getUsername());
 //        }
@@ -116,8 +126,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        jdbcUserDetailsManager.createUser(user);
 //        jdbcUserDetailsManager.createUser(admin);
 //        jdbcUserDetailsManager.createUser(manager);
+//
+//        return jdbcUserDetailsManager;
+//    }
 
-        return jdbcUserDetailsManager;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(userService);
+        return authenticationProvider;
     }
 
 }
