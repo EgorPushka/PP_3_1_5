@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>USERS HTML</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 50%; /* Ширина таблицы */
+            background: olive; /* Цвет фона таблицы */
+            color: black; /* Цвет текста */
+            border-spacing: 2px; /* Расстояние между ячейками */
+            margin: 0 auto;
+        }
+
+        td, th {
+            background: aliceblue; /* Цвет фона ячеек *!*/
+            padding: 2px; /* Поля вокруг текста */
+            text-align: left;
+            width: 25%;
+        }
+
+        button {
+            width: 50px;
+            height: 20px;
+        }
+
+        .add-user-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<table>
+    <caption>User List</caption>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="user : ${users}">
+
+        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getAge()}"></td>
+        <td>
+            <div style="display: inline-block;">
+                <form th:method="GET" th:action="@{/users/{id}(id=${user.getId()})}">
+                    <button type="submit" value="Detail">Detail</button>
+                </form>
+            </div>
+
+            <div style="display: inline-block;">
+                <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
+                    <button type="submit" value="Edit">Edit</button>
+                </form>
+            </div>
+            <div style="display: inline-block;">
+                <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+                    <button type="submit" value="Delete">Delete</button>
+                </form>
+            </div>
+
+        </td>
+    </tr>
+</table>
+<div class="add-user-link">
+    <h2 style="text-align: center"><a href="/users/new">Add User</a></h2>
+</div>
+
+<div>
+    <h3>INFO for ADMIN</h3>
+    <input type="button" value="ADMIN PAGE" onclick="window.location.href='admin_page'">
+</div>
+
+<br/>
+<div>
+    <h3>INFO for MANAGER</h3>
+    <input type="button" value="MANAGER PAGE" onclick="window.location.href='manager_page'">
+</div>
+
+</body>
+</html>
