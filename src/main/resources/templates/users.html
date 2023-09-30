@@ -46,14 +46,19 @@
 <table>
     <caption>User List</caption>
     <tr>
+        <th>Id</th>
         <th>Name</th>
+        <th>Email</th>
         <th>Age</th>
         <th>Action</th>
     </tr>
     <tr th:each="user : ${users}">
 
-        <td th:text="${user.getName()}"></td>
-        <td th:text="${user.getAge()}"></td>
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getUseremail()}"></td>
+        <td th:text="${user.getUserage()}"></td>
+
         <td>
             <div style="display: inline-block;">
                 <form th:method="GET" th:action="@{/users/{id}(id=${user.getId()})}">
@@ -61,7 +66,8 @@
                 </form>
             </div>
 
-            <div style="display: inline-block;">
+            <!--            <div style="display: inline-block;">-->
+            <div style="display: inline-block;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
                 <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
                     <button type="submit" value="Edit">Edit</button>
                 </form>

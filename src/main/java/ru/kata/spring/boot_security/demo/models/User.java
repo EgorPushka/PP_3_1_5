@@ -17,11 +17,13 @@ public class User {
     private String username;
     private String password;
     private String useremail;
-    private int age;
+    private int userage;
 
     @ManyToMany
     @JoinTable(name = "users_roles"
             , joinColumns = @JoinColumn(name = "user_id")
             , inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+
 }

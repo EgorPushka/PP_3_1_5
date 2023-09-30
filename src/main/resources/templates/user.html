@@ -1,11 +1,65 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <style>
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 50%; /* Ширина таблицы */
+            background: red; /* Цвет фона таблицы */
+            color: black; /* Цвет текста */
+            border-spacing: 2px; /* Расстояние между ячейками */
+        }
+
+        td, th {
+            background: aliceblue; /* Цвет фона ячеек *!*/
+            padding: 2px; /* Поля вокруг текста */
+            text-align: left;
+            width: 25%;
+        }
+
+        button {
+            width: 50px;
+            height: 20px;
+        }
+        .add-user-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
-<h1>User123, welcome spring boot security page!</h1>
+<table>
+    <tr>
+        <th>Use_Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+    </tr>
+    <tr th:object="${user}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getAge()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+    </tr>
+</table>
 
+<div class="add-user-link">
+    <h2 style="text-align: center"><a href="/users">Back to Users list</a></h2>
+</div>
 
 </body>
 </html>
