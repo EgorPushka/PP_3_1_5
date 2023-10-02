@@ -13,7 +13,7 @@ import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //    private final SuccessUserHandler successUserHandler;
@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/secret/**").authenticated()
                 .antMatchers("/admins/**").hasRole("ADMIN")
                 .antMatchers("/managers/**").hasAuthority("AUTH_MANAGERS")
+                .antMatchers("/users/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()

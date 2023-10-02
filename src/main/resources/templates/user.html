@@ -51,14 +51,14 @@
     </tr>
     <tr th:object="${user}">
         <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getName()}"></td>
-        <td th:text="${user.getAge()}"></td>
-        <td th:text="${user.getEmail()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getUserage()}"></td>
+        <td th:text="${user.getUseremail()}"></td>
     </tr>
 </table>
 
 <div class="add-user-link">
-    <h2 style="text-align: center"><a href="/users">Back to Users list</a></h2>
+    <h2 style="text-align: center"><a href="/secret">Back to Users list</a></h2>
 </div>
 
 </body>

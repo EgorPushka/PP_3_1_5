@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<title>Add New User</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    label, input, .error-message {
+        margin-bottom: 10px;
+    }
+</style>
+<body>
+
+<form th:method="POST" th:action="@{/users}" th:object="${user}">
+
+    <label for="name">Set Name : </label>
+    <input type="text" th:field="*{username}" id="name">
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"/>
+    <br/>
+    <br/>
+    <label for="age">Set Age : </label>
+    <input type="number" th:field="*{userage}" id="age">
+    <div th:if="${#fields.hasErrors('userage')}" th:errors="*{userage}" class="error-message"/>
+    <br/>
+    <br/>
+    <label for="email">Set Enail : </label>
+    <input type="text" th:field="*{useremail}" id="email">
+    <div th:if="${#fields.hasErrors('useremail')}" th:errors="*{useremail}" class="error-message"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Add User"/>
+
+</form>
+
+</body>
+</html>
