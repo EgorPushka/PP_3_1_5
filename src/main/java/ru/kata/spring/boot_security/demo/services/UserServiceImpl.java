@@ -5,6 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -25,7 +27,6 @@ public class UserServiceImpl implements UserService {
         this.usersRepo = usersRepo;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<User> indexUsers() {
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional (readOnly = true)
+    @Transactional
     public void edit(User user) {
         usersRepo.save(user);
     }
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
         return usersRepo.getById(id);
     }
 
+    @Override
     public User findByUsername(String name) {
         return usersRepo.findByUsername(name).get();
     }
@@ -63,7 +65,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         User user = findByUsername(username);
+
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s not found", username));
         }
@@ -71,7 +75,6 @@ public class UserServiceImpl implements UserService {
         return new org.springframework.security.core.userdetails.User
                 (user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
-
 
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
