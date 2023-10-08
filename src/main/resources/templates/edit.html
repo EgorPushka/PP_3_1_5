@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<title>Add New User</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
 <style>
     body {
         display: flex;
@@ -21,10 +19,34 @@
     label, input, .error-message {
         margin-bottom: 10px;
     }
+
+    .add-user-link {
+        text-align: center;
+        margin-top: 10px;
+    }
 </style>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
+</head>
 <body>
 
-<form th:method="POST" th:action="@{/users}" th:object="${user}">
+<form th:method="PATCH" th:action="@{/users/{id}(id=${user.getId()})}" th:object="${user}">
+
+    <div>
+        <h1 style="text-align: center">User Profile</h1>
+        <p style="text-align: center" th:text="${user.getId()}"></p>
+        <p style="text-align: center" th:text="${user.getUsername()}"></p>
+        <p style="text-align: center" th:text="${user.getUserage()}"></p>
+        <p style="text-align: center" th:text="${user.getUseremail()}"></p>
+        <p style="text-align: center" th:text="${user.getPassword()}"></p>
+    </div>
+    <br/>
+    <div class="add-user-link" style="text-align: center">
+        <h2><a href="/users">Back to Users Page</a></h2>
+    </div>
+    <br/>
 
     <label for="name">Set Name : </label>
     <input type="text" th:field="*{username}" id="name">
@@ -50,7 +72,7 @@
     <br/>
     <br/>
 
-    <input type="submit" value="Add User"/>
+    <input type="submit" value="Update User"/>
 
 </form>
 

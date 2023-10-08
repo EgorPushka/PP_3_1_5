@@ -66,8 +66,8 @@
                 </form>
             </div>
 
-            <!--            <div style="display: inline-block;">-->
-            <div style="display: inline-block;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+<!--            <div style="display: inline-block;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
+            <div>
                 <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
                     <button type="submit" value="Edit">Edit</button>
                 </form>

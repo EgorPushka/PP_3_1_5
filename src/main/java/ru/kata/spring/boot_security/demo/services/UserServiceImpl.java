@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +27,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> indexUsers() {
         return usersRepo.findAll();
     }
 
     @Override
+    @Transactional
     public void add(User user) {
 
+        usersRepo.save(user);
     }
 
     @Override
@@ -43,11 +45,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void edit(User user) {
-
+        usersRepo.save(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getById(int id) {
         return usersRepo.getById(id);
     }
