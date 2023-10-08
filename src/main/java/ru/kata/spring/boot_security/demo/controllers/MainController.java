@@ -42,6 +42,10 @@ public class MainController {
 //        System.out.println(userService.ge
 
         model.addAttribute("user", new User());
+
+        List<Role> roles = roleRepo.findAll();
+        model.addAttribute("roles", roles);
+
         return "/new";
     }
 
@@ -61,7 +65,6 @@ public class MainController {
 
         return "/edit";
     }
-
 
     @PatchMapping("/users/{id}")
     public String editUser(@Valid User user,
