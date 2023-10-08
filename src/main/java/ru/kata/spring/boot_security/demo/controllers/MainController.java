@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
-
 import javax.validation.Valid;
 
 @Controller
@@ -22,33 +21,9 @@ public class MainController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping(value = "/")
-
-    public String getInformForAll() {
-
-        return "/index";
-    }
-
-    @GetMapping(value = "/users")
-    public String getSecret(ModelMap modelMap) {
-
-        modelMap.addAttribute("users", userServiceImpl.indexUsers());
-
-        return "/users";
-    }
-
-//
-//    @GetMapping("/managers")
-//    public String pageForManager() {
-////        return "MANAGER's Page Here";
-//        return "/users";
-//    }
-
     @GetMapping("/users/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
-
         model.addAttribute("user", userServiceImpl.getById(id));
-
         return "/user";
     }
 
@@ -65,20 +40,17 @@ public class MainController {
 
     @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-
         model.addAttribute("user", userServiceImpl.getById(id));
-
         return "/edit";
     }
 
     @PatchMapping("/users/{id}")
-    public String editUser(@Valid User user, BindingResult bindingResult, @PathVariable("id") int id) {
-
+    public String editUser(@Valid User user,
+                           BindingResult bindingResult, @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
-        userServiceImpl.edit(user);
-
+        userServiceImpl.edit(userServiceImpl.getById(id));
         return "/users";
     }
 
