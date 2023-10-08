@@ -76,5 +76,18 @@
 
 </form>
 
+<form th:action="@{/users/save}" th:object="${user}" method="post">
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roles"
+                   th:each="role : ${roles}"
+                   th:text="${role.getName()}"
+                   th:value="${role.getId()}"
+                   th:field="*{roles}"
+            />
+        </label>
+    </p>
+</form>
+
 </body>
 </html>

@@ -6,15 +6,22 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class MainController {
 
     private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private RoleRepo roleRepo;
 
     @Autowired
     public void setUserService(UserServiceImpl userServiceImpl) {
@@ -38,11 +45,23 @@ public class MainController {
         return "/new";
     }
 
+//    @GetMapping("/users/{id}/edit")
+//    public String edit(@PathVariable("id") int id, Model model) {
+//        model.addAttribute("user", userServiceImpl.getById(id));
+//        return "/edit";
+//    }
     @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userServiceImpl.getById(id));
+
+        User user = userServiceImpl.getById(id);
+        model.addAttribute("user", user);
+
+        List<Role> roles = roleRepo.findAll();
+        model.addAttribute("roles", roles);
+
         return "/edit";
     }
+
 
     @PatchMapping("/users/{id}")
     public String editUser(@Valid User user,
@@ -50,8 +69,8 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
-        userServiceImpl.edit(userServiceImpl.getById(id));
-        return "/users";
+        userServiceImpl.edit(user);
+        return "redirect:/users";
     }
 
     @PostMapping("/users")

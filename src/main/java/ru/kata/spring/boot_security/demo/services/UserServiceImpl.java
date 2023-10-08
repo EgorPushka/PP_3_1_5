@@ -35,17 +35,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void add(User user) {
-
         usersRepo.save(user);
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         usersRepo.deleteById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional (readOnly = true)
     public void edit(User user) {
         usersRepo.save(user);
     }
@@ -71,6 +71,8 @@ public class UserServiceImpl implements UserService {
         return new org.springframework.security.core.userdetails.User
                 (user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
+
+
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
         return roles.stream()
