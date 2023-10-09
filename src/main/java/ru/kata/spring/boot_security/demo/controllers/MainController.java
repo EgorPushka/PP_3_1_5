@@ -4,26 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
-
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class MainController {
 
-
     private UserService userService;
     private RoleRepo roleRepo;
     private PasswordEncoder passwordEncoder;
+    private static final String REDIRECT_USERS_PAGE = "redirect:/users";
 
     @Autowired
     public MainController(UserService userService, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
@@ -69,7 +65,7 @@ public class MainController {
             return "/edit";
         }
         userService.edit(user);
-        return "redirect:/users";
+        return REDIRECT_USERS_PAGE;
     }
 
     @PostMapping("/users")
@@ -83,13 +79,13 @@ public class MainController {
 
         userService.add(user);
 
-        return "redirect:/users";
+        return REDIRECT_USERS_PAGE;
     }
 
     @DeleteMapping("/users/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/users";
+        return REDIRECT_USERS_PAGE;
     }
 
 }

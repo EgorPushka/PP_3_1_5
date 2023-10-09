@@ -3,10 +3,9 @@ package ru.kata.spring.boot_security.demo.models;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
+
 
 @Entity
 @Getter
