@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>User</title>
@@ -59,10 +58,6 @@
         <td th:text="${user.getRoles()}"></td>
     </tr>
 </table>
-
-<div>
-    <p th:text="${user.getPassword()}"></p>
-</div>
 
 <div class="add-user-link">
     <h2 style="text-align: center"><a href="/users">Back to Users list</a></h2>
