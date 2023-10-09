@@ -40,24 +40,12 @@ public class MainController {
 
     @GetMapping("/users/new")
     public String newUser(Model model) {
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        UserService userService = (UserService) authentication.getPrincipal();
-//        System.out.println(userService.ge
-
-        model.addAttribute("user", new User());
-
         List<Role> roles = roleRepo.findAll();
+        model.addAttribute("user", new User());
         model.addAttribute("roles", roles);
-
         return "/new";
     }
 
-//    @GetMapping("/users/{id}/edit")
-//    public String edit(@PathVariable("id") int id, Model model) {
-//        model.addAttribute("user", userServiceImpl.getById(id));
-//        return "/edit";
-//    }
     @GetMapping("/users/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
 
@@ -89,7 +77,6 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
-
         String rawPassword = user.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encodedPassword);

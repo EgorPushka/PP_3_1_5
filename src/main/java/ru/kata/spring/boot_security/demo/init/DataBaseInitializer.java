@@ -18,7 +18,6 @@ import java.util.Collection;
 @Component
 public class DataBaseInitializer {
 
-
     private UserService userService;
     private RoleService roleService;
     private PasswordEncoder passwordEncoder;
@@ -30,27 +29,27 @@ public class DataBaseInitializer {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-
     @PostConstruct
     @Transactional
     public void initializeData() {
 
         Role userRole = new Role("ROLE_USER");
-        Role adminRole = new Role("ROLE_ADMIN");
-        Role managerRole = new Role("AUTH_MANAGERS");
-
-        User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23);
-        User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31);
-        User manager = new User("manager", passwordEncoder.encode("manager"), "neo.anderson@gmail.com", 32);
-
-        userService.add(user);
-        userService.add(admin);
-        userService.add(manager);
-
         roleService.save(userRole);
+        User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23);
+        user.setRoles(Arrays.asList(userRole));
+        userService.add(user);
+
+        Role adminRole = new Role("ROLE_ADMIN");
         roleService.save(adminRole);
+        User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31);
+        admin.setRoles(Arrays.asList(adminRole));
+        userService.add(admin);
+
+        Role managerRole = new Role("AUTH_MANAGERS");
         roleService.save(managerRole);
+        User manager = new User("manager", passwordEncoder.encode("manager"), "neo.anderson@gmail.com", 32);
+        manager.setRoles(Arrays.asList(managerRole));
+        userService.add(manager);
 
     }
 

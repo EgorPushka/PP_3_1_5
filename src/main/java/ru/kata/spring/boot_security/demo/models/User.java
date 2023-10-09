@@ -71,4 +71,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
 }
