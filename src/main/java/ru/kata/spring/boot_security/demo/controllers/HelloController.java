@@ -6,6 +6,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class HelloController {
 
@@ -25,5 +27,13 @@ public class HelloController {
     public String getSecret(ModelMap modelMap) {
         modelMap.addAttribute("users", userService.indexUsers());
         return "/users";
+    }
+
+    @GetMapping(value = "/user")
+    public String goToUserPage(ModelMap modelMap, Principal principal) {
+//        modelMap.addAttribute("users", userService.indexUsers());
+        modelMap.addAttribute("user", userService.findByUsername(principal.getName()));
+
+        return "/user";
     }
 }
