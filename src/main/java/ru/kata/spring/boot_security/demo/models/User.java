@@ -30,12 +30,21 @@ public class User implements UserDetails {
     private String useremail;
     private int userage;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles"
             , joinColumns = @JoinColumn(name = "user_id")
             , inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    public User() {
+    }
+
+    public User(String username, String password, String useremail, int userage) {
+        this.username = username;
+        this.password = password;
+        this.useremail = useremail;
+        this.userage = userage;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -61,4 +70,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
