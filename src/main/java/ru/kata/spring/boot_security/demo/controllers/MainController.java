@@ -16,9 +16,9 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private UserService userService;
-    private RoleRepo roleRepo;
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final RoleRepo roleRepo;
+    private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_USERS_PAGE = "redirect:/users";
 
     @Autowired

@@ -16,9 +16,9 @@ import java.util.Arrays;
 @Component
 public class DataBaseInitializer {
 
-    private UserService userService;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public DataBaseInitializer(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
