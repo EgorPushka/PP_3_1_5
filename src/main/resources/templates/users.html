@@ -50,7 +50,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Age</th>
-        <th>Action</th>
+        <th th:if = "${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">Action</th>
     </tr>
     <tr th:each="user : ${users}">
 
@@ -59,14 +59,12 @@
         <td th:text="${user.getUseremail()}"></td>
         <td th:text="${user.getUserage()}"></td>
 
-        <td>
+        <td th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">
             <div style="display: inline-block;">
                 <form th:method="GET" th:action="@{/users/{id}(id=${user.getId()})}">
                     <button type="submit" value="Detail">Detail</button>
                 </form>
             </div>
-
-<!--            <div style="display: inline-block;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">-->
             <div>
                 <form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
                     <button type="submit" value="Edit">Edit</button>
@@ -77,12 +75,11 @@
                     <button type="submit" value="Delete">Delete</button>
                 </form>
             </div>
-
         </td>
     </tr>
 </table>
 
-<div class="add-user-link">
+<div class="add-user-link" th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">
     <h2 style="text-align: center"><a href="/users/new">Add User</a></h2>
 </div>
 <br/>
