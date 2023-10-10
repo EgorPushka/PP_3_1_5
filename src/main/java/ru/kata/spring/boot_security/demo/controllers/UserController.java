@@ -9,12 +9,12 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import java.security.Principal;
 
 @Controller
-public class HelloController {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public HelloController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -23,17 +23,11 @@ public class HelloController {
         return "/index";
     }
 
-    @GetMapping(value = "/users")
-    public String getSecret(ModelMap modelMap) {
-        modelMap.addAttribute("users", userService.indexUsers());
-        return "/users";
-    }
+
 
     @GetMapping(value = "/user")
     public String goToUserPage(ModelMap modelMap, Principal principal) {
-//        modelMap.addAttribute("users", userService.indexUsers());
         modelMap.addAttribute("user", userService.findByUsername(principal.getName()));
-
         return "/user";
     }
 }

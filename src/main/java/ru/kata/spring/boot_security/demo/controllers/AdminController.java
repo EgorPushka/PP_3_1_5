@@ -4,28 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
 import ru.kata.spring.boot_security.demo.services.UserService;
+
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-public class MainController {
+public class AdminController {
 
-    private final UserService userService;
     private final RoleRepo roleRepo;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private static final String REDIRECT_USERS_PAGE = "redirect:/users";
+    private static final String REDIRECT_USERS_PAGE = "redirect:/admin";
 
     @Autowired
-    public MainController(UserService userService, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    public AdminController(UserService userService, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         this.roleRepo = roleRepo;
-        this.passwordEncoder=passwordEncoder;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping(value = "/admin")
+    public String getSecret(ModelMap modelMap) {
+        modelMap.addAttribute("users", userService.indexUsers());
+        return "/users";
     }
 
     @GetMapping("/users/{id}")

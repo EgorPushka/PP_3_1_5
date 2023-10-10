@@ -59,8 +59,12 @@
     </tr>
 </table>
 
+<div class="add-user-link" th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">
+    <h2 style="text-align: center"><a href="/admin">Back to Users list</a></h2>
+</div>
+
 <div class="add-user-link">
-    <h2 style="text-align: center"><a href="/users">Back to Users list</a></h2>
+    <h2 style="text-align: center"><a href="/logout">Logout</a></h2>
 </div>
 
 </body>
