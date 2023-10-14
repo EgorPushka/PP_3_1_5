@@ -9,13 +9,13 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDAOImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    @Transactional
     public List<User> indexUsers() {
         return entityManager
                 .createQuery("select u from User u", User.class)
@@ -23,19 +23,16 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    @Transactional
     public void edit(User user) {
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public void add(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional
     public void delete(int id) {
         entityManager.remove(entityManager.find(User.class, id));
     }

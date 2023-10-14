@@ -2,85 +2,75 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.UsersRepo;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
+import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final UsersRepo usersRepo;
+    private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    @Lazy
-    public UserServiceImpl(UsersRepo usersRepo, PasswordEncoder passwordEncoder) {
-        this.usersRepo = usersRepo;
+    public UserServiceImpl(UserDAO userDAO, @Lazy PasswordEncoder passwordEncoder) {
+        this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> indexUsers() {
-        return usersRepo.findAll();
+        return userDAO.indexUsers();
     }
 
     @Override
-    @Transactional
     public void add(User user) {
-        usersRepo.save(user);
+
+        String rawPass = user.getPassword();
+        String encPass = passwordEncoder.encode(rawPass);
+        user.setPassword(encPass);
+        userDAO.add(user);
     }
 
     @Override
-    @Transactional
     public void delete(int id) {
-        usersRepo.deleteById(id);
+        userDAO.delete(id);
     }
 
     @Override
-    @Transactional
     public void edit(User user) {
-        usersRepo.save(user);
+
+        String rawPass = user.getPassword();
+        String encPass = passwordEncoder.encode(rawPass);
+        user.setPassword(encPass);
+
+//        encodeAndSetPasswaord(user);
+
+        userDAO.edit(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public User getById(int id) {
-        return usersRepo.getById(id);
+    public User getUserById(int id) {
+        return userDAO.getUserById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public User findByUsername(String name) {
-        Optional<User> optionalUser = usersRepo.findByUsername(name);
-        return optionalUser.orElse(null);
+    public User getUserByName(String name) {
+        return userDAO.getUserByName(name);
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User %s not found", username));
-        }
-        return new org.springframework.security.core.userdetails.User
-                (user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
+        return userDAO.getUserByName(username);
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .toList();
-    }
+//    private void encodeAndSetPasswaord (User user) {
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//    }
 }

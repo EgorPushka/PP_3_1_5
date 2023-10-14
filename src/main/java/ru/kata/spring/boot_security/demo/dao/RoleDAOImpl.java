@@ -16,7 +16,7 @@ public class RoleDAOImpl implements RoleDAO {
     private EntityManager entityManager;
 
     @Override
-    public List<Role> getAllRoles() {
+    public List<Role> indexRoles() {
         return entityManager
                 .createQuery("select r from Role r", Role.class).getResultList();
     }
@@ -30,7 +30,7 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public Role getRoleById(Long id) {
+    public Role getRoleById(int id) {
         return entityManager.find(Role.class, id);
     }
 

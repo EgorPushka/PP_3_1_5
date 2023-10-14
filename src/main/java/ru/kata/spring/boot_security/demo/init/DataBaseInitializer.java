@@ -32,14 +32,14 @@ public class DataBaseInitializer {
     public void initializeData() {
 
         Role userRole = new Role("ROLE_USER");
-        roleService.save(userRole);
-        User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23);
+        roleService.addRole(userRole);
+        User user = new User("user","user" ,passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23);
         user.setRoles(Arrays.asList(userRole));
         userService.add(user);
 
         Role adminRole = new Role("ROLE_ADMIN");
-        roleService.save(adminRole);
-        User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31);
+        roleService.addRole(adminRole);
+        User admin = new User("admin", "admin",passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31);
         admin.setRoles(Arrays.asList(adminRole, userRole));
         userService.add(admin);
 

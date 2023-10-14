@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @NotEmpty(message = "Not valid name!")
     @Size(min = 1, max = 50, message = "Enter correct value bet.1 and 15 chars!")
     private String username;
-
+    private String userlastname;
     private String password;
     private String useremail;
     private int userage;
@@ -39,8 +39,9 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String useremail, int userage) {
+    public User(String username, String userlastname, String password, String useremail, int userage) {
         this.username = username;
+        this.userlastname = userlastname;
         this.password = password;
         this.useremail = useremail;
         this.userage = userage;
