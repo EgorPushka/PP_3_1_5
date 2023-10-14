@@ -20,14 +20,12 @@ public class AdminController {
 
     private final RoleRepo roleRepo;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private static final String REDIRECT_USERS_PAGE = "redirect:/admin";
 
     @Autowired
-    public AdminController(UserService userService, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleRepo roleRepo) {
         this.roleRepo = roleRepo;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/admin")
@@ -65,10 +63,6 @@ public class AdminController {
     @PatchMapping("/users/{id}")
     public String editUser(@Valid User user, BindingResult bindingResult, @PathVariable("id") int id) {
 
-        String rawPassword = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encodedPassword);
-
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
@@ -81,9 +75,6 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
-        String rawPassword = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encodedPassword);
 
         userService.add(user);
 

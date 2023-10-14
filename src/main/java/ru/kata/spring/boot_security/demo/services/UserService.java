@@ -12,5 +12,5 @@ public interface UserService extends UserDetailsService {
     void edit(User user);
     User getById(int id);
     User findByUsername(String name);
-    UserDetails loadUserByUsername(String username);
+//    UserDetails loadUserByUsername(String username);
 }
