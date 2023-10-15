@@ -51,24 +51,25 @@
     <input type="text" th:field="*{username}" id="name">
     <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></div>
     <br/>
+
+    <label for="lastname">Set Name : </label>
+    <input type="text" th:field="*{lastname}" id="lastname">
+    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="error-message"></div>
     <br/>
 
     <label for="age">Set Age : </label>
     <input type="number" th:field="*{userage}" id="age">
     <div th:if="${#fields.hasErrors('userage')}" th:errors="*{userage}" class="error-message"></div>
     <br/>
-    <br/>
 
     <label for="email">Set Enail : </label>
     <input type="text" th:field="*{useremail}" id="email">
     <div th:if="${#fields.hasErrors('useremail')}" th:errors="*{useremail}" class="error-message"></div>
     <br/>
-    <br/>
 
     <label for="password">Set Password : </label>
     <input type="text" th:field="*{password}" id="password">
     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></div>
-    <br/>
     <br/>
 
     <p>
