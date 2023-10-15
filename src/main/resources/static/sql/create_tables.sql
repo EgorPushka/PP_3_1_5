@@ -1,14 +1,15 @@
 drop table Users;
 
-# create table if not exists users
-# (
-#     id        int PRIMARY KEY AUTO_INCREMENT,
-#     username  varchar(50)  not null,
-#     userage   int          not null default 0,
-#     useremail varchar(50)  not null default 'mail',
-#     password  varchar(100) not null,
-#     enabled   boolean      not null default 1
-# );
+create table if not exists users
+(
+    id        int PRIMARY KEY AUTO_INCREMENT,
+    username  varchar(50)  not null,
+    userlastname  varchar(50)  not null,
+    userage   int          not null default 0,
+    useremail varchar(50)  not null default 'mail',
+    password  varchar(100) not null,
+    enabled   boolean      not null default 1
+);
 
 create table if not exists users
 (
@@ -37,7 +38,7 @@ create table if not exists authorities
 # );
 
 
-insert ignore into users (username, userage, useremail, password, enabled)
+insert ignore into users (username,userage, useremail, password, enabled)
 values ("user", 23, "luke.skywalker@gmail.com", "{bcrypt}$2a$12$npwjlEUtsgRx4PLxJXIOI.tMD8178g0kAE2QJPuW0ulKSeA54JhBy", 1),
        ("admin", 35, "ellie.arroway@gmail.com", "{bcrypt}$2a$12$vsoeAETi5OoVk81nWhYoI.PQqD3m1zl.0wYX.A7F1JJbQT8CTcrAi", 1),
        ("manager", 30, "neo.anderson@gmail.com", "{bcrypt}$2a$12$Nuh5uUZjcLTifZf5GNND5uabPgiSalMBZ3y7miZF5/CxAaJzd07Ni", 1),

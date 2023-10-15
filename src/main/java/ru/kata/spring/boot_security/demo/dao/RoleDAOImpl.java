@@ -38,4 +38,13 @@ public class RoleDAOImpl implements RoleDAO {
     public void addRole(Role role) {
         entityManager.persist(role);
     }
+
+    @Override
+    public List<Role> getRolesByIds(List<Integer> roleIds) {
+        return entityManager
+                .createQuery("select r from Role r where r.id in :ids", Role.class)
+                .setParameter("ids", roleIds)
+                .getResultList();
+    }
+
 }

@@ -6,34 +6,41 @@ import ru.kata.spring.boot_security.demo.dao.RoleDAO;
 import ru.kata.spring.boot_security.demo.models.Role;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleDAO roleDAO;
+    private final RoleDAO roleRepo;
 
     @Autowired
-    public RoleServiceImpl(RoleDAO roleDAO) {
-        this.roleDAO = roleDAO;
+    public RoleServiceImpl(RoleDAO roleRepo) {
+        this.roleRepo = roleRepo;
     }
+
 
     @Override
     public List<Role> indexRoles() {
-        return roleDAO.indexRoles();
+        return roleRepo.indexRoles();
     }
 
     @Override
-    public Role getRole(String userRole) {
-        return roleDAO.getRole(userRole);
+    public Role getRole(String roleName) {
+        return roleRepo.getRole(roleName);
     }
 
     @Override
     public Role getRoleById(int id) {
-        return roleDAO.getRoleById(id);
+        return roleRepo.getRoleById(id);
     }
 
     @Override
     public void addRole(Role role) {
-        roleDAO.addRole(role);
+        roleRepo.addRole(role);
+    }
+
+    @Override
+    public List<Role> getRolesByIds(List<Integer> roleIds) {
+        return roleRepo.getRolesByIds(roleIds);
     }
 }
