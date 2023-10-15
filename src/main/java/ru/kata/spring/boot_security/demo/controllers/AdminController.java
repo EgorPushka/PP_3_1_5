@@ -13,8 +13,6 @@ import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @Controller
