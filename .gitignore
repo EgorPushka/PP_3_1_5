@@ -31,4 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-/sql/
+/src/main/resources/static/css/sql/
