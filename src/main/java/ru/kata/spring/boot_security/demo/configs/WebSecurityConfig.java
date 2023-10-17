@@ -40,8 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/login")
                 .successHandler(successUserHandler)
                 .loginProcessingUrl("/login")
-                .usernameParameter("myname")
-                .passwordParameter("mypassword")
+//                .usernameParameter("myname")
+//                .passwordParameter("mypassword")
                 .permitAll();
 
         http.logout()

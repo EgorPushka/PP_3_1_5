@@ -5,7 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -44,9 +46,17 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByName(String username) {
-        return entityManager
+        TypedQuery<User> query = entityManager
                 .createQuery("select u from User u where u.username =: name", User.class)
-                .setParameter("name", username)
-                .getSingleResult();
+                .setParameter("name", username);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+//        return entityManager
+//                .createQuery("select u from User u where u.username =: name", User.class)
+//                .setParameter("name", username)
+//                .getSingleResult();
     }
 }

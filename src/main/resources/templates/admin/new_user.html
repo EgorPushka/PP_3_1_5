@@ -48,45 +48,54 @@
                             </div>
                         </div>
                         <div class="col-md bg-white border">
-                            <form class="offset-md-4 col-md-4 mt-1 mb-1" th:align="center" th:action="@{/admin/users}" th:object="${user}" method="POST">
+                            <form class="offset-md-4 col-md-4 mt-1 mb-1" th:align="center" th:action="@{/admin/users}"
+                                  th:object="${user}" method="POST">
                                 <label for="name"><b>Name</b></label>
                                 <input th:name="username" th:type="text" class="form-control" id="name" required/>
-                                <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" >name error</div>
+                                <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                                    name error
+                                </div>
                                 <br>
                                 <label for="name2"><b>Lastname</b></label>
                                 <input th:name="lastname" th:type="text" class="form-control" id="name2" required/>
-                                <div style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" >surname error</div>
+                                <div style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">
+                                    surname error
+                                </div>
                                 <br>
                                 <label for="age"><b>Age</b></label>
                                 <input th:name="userage" th:type="number" class="form-control" id="age"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('userage')}" th:errors="*{userage}" >age error</div>
+                                <div style="color:red" th:if="${#fields.hasErrors('userage')}" th:errors="*{userage}">
+                                    age error
+                                </div>
                                 <br>
                                 <label for="email"><b>Email</b></label>
                                 <input th:name="useremail" th:type="text" class="form-control" id="email" required/>
-                                <div style="color:red" th:if="${#fields.hasErrors('useremail')}" th:errors="*{useremail}" >email error</div>
+                                <div style="color:red" th:if="${#fields.hasErrors('useremail')}"
+                                     th:errors="*{useremail}">email error
+                                </div>
                                 <br>
                                 <label for="password"><b>Password</b></label>
                                 <input th:name="password" th:field="*{password}" th:type="password" class="form-control"
                                        id="password"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" >password error</div>
+                                <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                                    password error
+                                </div>
                                 <br>
 
                                 <div class="mb-3">
                                     <label><b>Roles</b></label>
                                     <select class="form-select"
-                                            aria-label="Default select example"
-                                            th:field="*{roles}" required>
+                                            aria-label="Default select example" size="2"
+                                            th:field="*{roles}" required multiple>
                                         <option th:each="role : ${roles}"
                                                 th:value="${role.getId()}"
-                                                th:switch="${role.getName()}">
-                                            <span th:case="'ADMIN'">ADMIN</span>
-                                            <span th:case="'USER'">USER</span>
+                                                th:text="${role.name}">
                                         </option>
                                     </select>
                                 </div>
 
-
-                                <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user</button>
+                                <button th:type="submit" class="btn btn-success btn-lg" value="Add new user">Add new user
+                                </button>
                             </form>
                         </div>
                     </div>

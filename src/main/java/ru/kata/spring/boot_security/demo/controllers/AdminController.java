@@ -1,13 +1,10 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -35,30 +32,20 @@ public class AdminController {
     }
 
     @GetMapping(value = "/admin")
-    public String getSecret(ModelMap modelMap, Principal principal) {
+    public String getSecret(Model model, Principal principal) {
 
-        modelMap.addAttribute("users", userService.indexUsers());
-        modelMap.addAttribute("user", userService.findByUsername(principal.getName()));
-        modelMap.addAttribute("roles", roleRepo.indexRoles());
-        System.out.println("*********************************************");
-        System.out.println(modelMap);
-        System.out.println("*********************************************");
+        model.addAttribute("users", userService.indexUsers());
+        model.addAttribute("roles", roleRepo.indexRoles());
+        model.addAttribute("user", userService.findByUsername(principal.getName()));
+
         return "/admin/admin_page";
     }
-//    @GetMapping(value = "/admin")
-//    public String getAdminPage(@AuthenticationPrincipal User user, Model model, Principal principal) {
-//        model.addAttribute("users", userService.indexUsers());
-//        model.addAttribute("user", userService.findByUsername(principal.getName()));
-//        model.addAttribute("roles", roleRepo.indexRoles());
-//        return "admin/admin_page";
-//    }
 
     @GetMapping("/users/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getById(id));
         return "/user";
     }
-
 
 
     @GetMapping("/users/{id}/edit")
@@ -73,8 +60,8 @@ public class AdminController {
         return "/edit";
     }
 
-    @PatchMapping("/users/{id}")
-    public String editUser(@Valid User user, BindingResult bindingResult, @PathVariable("id") int id,
+    @PatchMapping("/admin/users/{id}")
+    public String editUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id,
                            @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
 
         if (bindingResult.hasErrors()) {
@@ -92,21 +79,11 @@ public class AdminController {
         return REDIRECT_USERS_PAGE;
     }
 
-//    @GetMapping("/admin/users/new")
-//    public String newUser(Model model) {
-//        List<Role> roles = roleRepo.indexRoles();
-//        model.addAttribute("user", new User());
-//        model.addAttribute("roles", roles);
-//        return "/new";
-//    }
     @GetMapping("/admin/users/new")
     public String newUserPage(Model model) {
+
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleRepo.indexRoles());
-
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(model);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         return "/admin/new_user";
     }
@@ -117,23 +94,25 @@ public class AdminController {
 
         System.out.println("===============================================");
         if (bindingResult.hasErrors()) {
-            return "/new";
+            return "/admin/new_user";
         }
-
         List<Role> selectedRoles = roleRepo.getRolesByIds(roleIds);
         user.setRoles(selectedRoles);
-
         String rawPassword = user.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encodedPassword);
-
         userService.add(user);
-
         return REDIRECT_USERS_PAGE;
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/admin/users/{id}")
     public String deleteUser(@PathVariable("id") int id) {
+
+        User user = userService.getById(id);
+        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwww");
+        System.out.println(user);
+        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwww");
+
         userService.delete(id);
         return REDIRECT_USERS_PAGE;
     }

@@ -64,20 +64,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
 
+        User user = findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s not found", username));
         }
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 (user.getRoles()).stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
     }
 
-//    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
-//        return roles.stream()
-//                .map(role -> new SimpleGrantedAuthority(role.getName()))
-//                .toList();
-//    }
 }
