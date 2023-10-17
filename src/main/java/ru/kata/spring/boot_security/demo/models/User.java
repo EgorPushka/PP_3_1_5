@@ -87,4 +87,14 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
 }

@@ -31,13 +31,13 @@ public class DataBaseInitializer {
     @Transactional
     public void initializeData() {
 
-        Role userRole = new Role("ROLE_USER");
+        Role userRole = new Role("USER");
         roleService.addRole(userRole);
         User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23,"lastname1");
         user.setRoles(Arrays.asList(userRole));
         userService.add(user);
 
-        Role adminRole = new Role("ROLE_ADMIN");
+        Role adminRole = new Role("ADMIN");
         roleService.addRole(adminRole);
         User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31, "lastname2");
         admin.setRoles(Arrays.asList(adminRole, userRole));

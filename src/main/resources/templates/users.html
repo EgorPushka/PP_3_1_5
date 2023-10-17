@@ -50,7 +50,8 @@
         <th>Name</th>
         <th>Email</th>
         <th>Age</th>
-        <th th:if = "${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">Action</th>
+<!--        <th th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MANAGER'')')}">Action</th>-->
+        <th th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'')')}">Action</th>
     </tr>
     <tr th:each="user : ${users}">
 
@@ -59,7 +60,7 @@
         <td th:text="${user.getUseremail()}"></td>
         <td th:text="${user.getUserage()}"></td>
 
-        <td th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''AUTH_MANAGER'')')}">
+        <td th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'')')}">
             <div style="display: inline-block;">
                 <form th:method="GET" th:action="@{/users/{id}(id=${user.getId()})}">
                     <button type="submit" value="Detail">Detail</button>

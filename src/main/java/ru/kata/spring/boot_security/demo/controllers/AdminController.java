@@ -1,6 +1,9 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -31,10 +35,23 @@ public class AdminController {
     }
 
     @GetMapping(value = "/admin")
-    public String getSecret(ModelMap modelMap) {
+    public String getSecret(ModelMap modelMap, Principal principal) {
+
         modelMap.addAttribute("users", userService.indexUsers());
-        return "/users";
+        modelMap.addAttribute("user", userService.findByUsername(principal.getName()));
+        modelMap.addAttribute("roles", roleRepo.indexRoles());
+        System.out.println("*********************************************");
+        System.out.println(modelMap);
+        System.out.println("*********************************************");
+        return "/admin/admin_page";
     }
+//    @GetMapping(value = "/admin")
+//    public String getAdminPage(@AuthenticationPrincipal User user, Model model, Principal principal) {
+//        model.addAttribute("users", userService.indexUsers());
+//        model.addAttribute("user", userService.findByUsername(principal.getName()));
+//        model.addAttribute("roles", roleRepo.indexRoles());
+//        return "admin/admin_page";
+//    }
 
     @GetMapping("/users/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
@@ -75,18 +92,30 @@ public class AdminController {
         return REDIRECT_USERS_PAGE;
     }
 
-    @GetMapping("/users/new")
-    public String newUser(Model model) {
-        List<Role> roles = roleRepo.indexRoles();
+//    @GetMapping("/admin/users/new")
+//    public String newUser(Model model) {
+//        List<Role> roles = roleRepo.indexRoles();
+//        model.addAttribute("user", new User());
+//        model.addAttribute("roles", roles);
+//        return "/new";
+//    }
+    @GetMapping("/admin/users/new")
+    public String newUserPage(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", roles);
-        return "/new";
+        model.addAttribute("roles", roleRepo.indexRoles());
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(model);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+        return "/admin/new_user";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/admin/users")
     public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                           @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
 
+        System.out.println("===============================================");
         if (bindingResult.hasErrors()) {
             return "/new";
         }
