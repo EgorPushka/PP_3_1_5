@@ -54,9 +54,6 @@ public class UserDAOImpl implements UserDAO {
         } catch (NoResultException e) {
             return null;
         }
-//        return entityManager
-//                .createQuery("select u from User u where u.username =: name", User.class)
-//                .setParameter("name", username)
-//                .getSingleResult();
+
     }
 }

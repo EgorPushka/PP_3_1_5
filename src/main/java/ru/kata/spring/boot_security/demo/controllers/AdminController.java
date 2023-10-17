@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,8 +90,6 @@ public class AdminController {
     @PostMapping("/admin/users")
     public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                           @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
-
-        System.out.println("===============================================");
         if (bindingResult.hasErrors()) {
             return "/admin/new_user";
         }
@@ -107,12 +104,6 @@ public class AdminController {
 
     @DeleteMapping("/admin/users/{id}")
     public String deleteUser(@PathVariable("id") int id) {
-
-        User user = userService.getById(id);
-        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwww");
-        System.out.println(user);
-        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwww");
-
         userService.delete(id);
         return REDIRECT_USERS_PAGE;
     }
