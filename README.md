@@ -1,8 +1,8 @@
 There are two users to test the application:
 
 ****1****
-login: user
-password: user
+login---> user
+password user
 roles: USER
 
 ****2****
@@ -13,6 +13,8 @@ roles: USER, ADMIN
 ROLE_USER - only the user page is available
 
 ROLE_ADMIN - all CRUD operation
-*****
+***** 
+After running the App
+
 [Press for the test App](http://localhost:8080/)
 *****
