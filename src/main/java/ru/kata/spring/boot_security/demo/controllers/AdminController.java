@@ -40,24 +40,6 @@ public class AdminController {
         return "/admin/admin";
     }
 
-//    @GetMapping("/users/{id}")
-//    public String getById(@PathVariable("id") int id, Model model) {
-//        model.addAttribute("user", userService.getById(id));
-//        return "/user";
-//    }
-//
-//
-//    @GetMapping("/admin/users/{id}/edit")
-//    public String edit(@PathVariable("id") int id, Model model) {
-//
-//        User user = userService.getById(id);
-//        model.addAttribute("user", user);
-//
-//        List<Role> roles = roleRepo.indexRoles();
-//        model.addAttribute("roles", roles);
-//
-//        return "/edit";
-//    }
 
     @PatchMapping("/admin/users/{id}")
     public String editUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id,
