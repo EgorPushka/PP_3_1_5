@@ -37,44 +37,40 @@ public class AdminController {
         model.addAttribute("roles", roleRepo.indexRoles());
         model.addAttribute("user", userService.findByUsername(principal.getName()));
 
-        return "/admin/admin_page";
+        return "/admin/admin";
     }
 
-    @GetMapping("/users/{id}")
-    public String getById(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getById(id));
-        return "/user";
-    }
-
-
-    @GetMapping("/users/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
-
-        User user = userService.getById(id);
-        model.addAttribute("user", user);
-
-        List<Role> roles = roleRepo.indexRoles();
-        model.addAttribute("roles", roles);
-
-        return "/edit";
-    }
+//    @GetMapping("/users/{id}")
+//    public String getById(@PathVariable("id") int id, Model model) {
+//        model.addAttribute("user", userService.getById(id));
+//        return "/user";
+//    }
+//
+//
+//    @GetMapping("/admin/users/{id}/edit")
+//    public String edit(@PathVariable("id") int id, Model model) {
+//
+//        User user = userService.getById(id);
+//        model.addAttribute("user", user);
+//
+//        List<Role> roles = roleRepo.indexRoles();
+//        model.addAttribute("roles", roles);
+//
+//        return "/edit";
+//    }
 
     @PatchMapping("/admin/users/{id}")
     public String editUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id,
                            @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
 
-        if (bindingResult.hasErrors()) {
-            return "/edit";
+        if (!bindingResult.hasErrors()) {
+            String rawPassword = user.getPassword();
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            user.setPassword(encodedPassword);
+            List<Role> selectedRoles = roleRepo.getRolesByIds(roleIds);
+            user.setRoles(selectedRoles);
+            userService.edit(user);
         }
-
-        String rawPassword = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encodedPassword);
-
-        List<Role> selectedRoles = roleRepo.getRolesByIds(roleIds);
-        user.setRoles(selectedRoles);
-
-        userService.edit(user);
         return REDIRECT_USERS_PAGE;
     }
 
@@ -84,14 +80,14 @@ public class AdminController {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleRepo.indexRoles());
 
-        return "/admin/new_user";
+        return "/admin/new";
     }
 
     @PostMapping("/admin/users")
     public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                           @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
         if (bindingResult.hasErrors()) {
-            return "/admin/new_user";
+            return "/admin/new";
         }
         List<Role> selectedRoles = roleRepo.getRolesByIds(roleIds);
         user.setRoles(selectedRoles);
