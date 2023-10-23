@@ -10,12 +10,12 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     private final RoleService roleRepo;
@@ -30,18 +30,16 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping(value = "/admin")
+    @GetMapping
     public String getSecret(Model model, Principal principal) {
-
-        model.addAttribute("users", userService.indexUsers());
-        model.addAttribute("roles", roleRepo.indexRoles());
-        model.addAttribute("user", userService.findByUsername(principal.getName()));
-
-        return "/admin/admin";
+        model.addAttribute("allUsers", userService.indexUsers());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("dbRoles", roleRepo.indexRoles());
+        model.addAttribute("principalUser", userService.findByUsername(principal.getName()));
+        return "admin";
     }
 
-
-    @PatchMapping("/admin/users/{id}")
+    @PatchMapping("/{id}")
     public String editUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id,
                            @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
 
@@ -56,21 +54,10 @@ public class AdminController {
         return REDIRECT_USERS_PAGE;
     }
 
-    @GetMapping("/admin/users/new")
-    public String newUserPage(Model model) {
-
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleRepo.indexRoles());
-
-        return "/admin/new";
-    }
-
-    @PostMapping("/admin/users")
-    public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    @PostMapping
+    public String addUser(@ModelAttribute("newUser") User user,
                           @RequestParam(value = "roles", required = false) List<Integer> roleIds) {
-        if (bindingResult.hasErrors()) {
-            return "/admin/new";
-        }
+
         List<Role> selectedRoles = roleRepo.getRolesByIds(roleIds);
         user.setRoles(selectedRoles);
         String rawPassword = user.getPassword();
@@ -80,7 +67,7 @@ public class AdminController {
         return REDIRECT_USERS_PAGE;
     }
 
-    @DeleteMapping("/admin/users/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         userService.delete(id);
         return REDIRECT_USERS_PAGE;

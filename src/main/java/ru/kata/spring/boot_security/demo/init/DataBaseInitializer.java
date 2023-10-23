@@ -31,15 +31,15 @@ public class DataBaseInitializer {
     @Transactional
     public void initializeData() {
 
-        Role userRole = new Role("USER");
+        Role userRole = new Role("ROLE_USER");
         roleService.addRole(userRole);
-        User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23,"lastname1");
+        User user = new User("user", passwordEncoder.encode("user"), "luke.skywalker@gmail.com", 23,"skywalker");
         user.setRoles(Arrays.asList(userRole));
         userService.add(user);
 
-        Role adminRole = new Role("ADMIN");
+        Role adminRole = new Role("ROLE_ADMIN");
         roleService.addRole(adminRole);
-        User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31, "lastname2");
+        User admin = new User("admin", passwordEncoder.encode("admin"), "john.snow@winterfall.com", 31, "snow");
         admin.setRoles(Arrays.asList(adminRole, userRole));
         userService.add(admin);
 

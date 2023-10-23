@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.Collection;
 
-
 @Entity
 @Getter
 @Setter
@@ -17,7 +16,6 @@ public class Role implements GrantedAuthority{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-//    @Transient
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
@@ -46,4 +44,5 @@ public class Role implements GrantedAuthority{
     public String toString() {
         return this.name;
     }
+
 }

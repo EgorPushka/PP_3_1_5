@@ -5,12 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -22,23 +17,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @NotEmpty(message = "Not valid name!")
-    @Size(min = 1, max = 25, message = "Enter correct value bet.1 and 25 chars!")
     private String username;
-
-    @NotEmpty(message = "Enter correct value bet.1 and 25 chars!")
-    @Size(min = 2, max = 25)
     private String lastname;
-
-    @NotEmpty(message = "Enter correct value > 2 chars!")
-    @Size(min = 2)
     private String password;
-
-    @Email
     private String useremail;
-
-    @Min(value = 0, message = "Enter correct value  > 0")
     private int userage;
 
     @ManyToMany(fetch = FetchType.LAZY)
