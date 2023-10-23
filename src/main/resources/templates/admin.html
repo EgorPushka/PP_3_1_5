@@ -141,9 +141,9 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <!--Информация о юзере который будет удален-->
-                                                    <div1 class="modal-body">
-                                                        <div2 class="d-flex justify-content-center align-items-center container">
-                                                            <div3 class="row">
+                                                    <div class="modal-body">
+                                                        <div class="d-flex justify-content-center align-items-center container">
+                                                            <div class="row">
                                                                 <form th:method="DELETE"
                                                                       th:action="@{/admin/{id}(id=${user.getId()})}"
                                                                       th:object="${user}">
@@ -214,9 +214,9 @@
                                                                         <input type="submit" class="btn btn-danger" value="Delete"/>
                                                                     </div>
                                                                 </form>
-                                                            </div3>
-                                                        </div2>
-                                                    </div1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
