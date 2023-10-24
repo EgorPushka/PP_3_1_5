@@ -10,27 +10,29 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class RoleDAOImpl implements RoleDAO {
+public class RoleDAOImpl implements RoleDAO{
 
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Override
-    public List<Role> indexRoles() {
+    public List<Role> getAllRoles() {
         return entityManager
-                .createQuery("select r from Role r", Role.class).getResultList();
+                .createQuery("select r from Role r", Role.class)
+                .getResultList();
     }
 
     @Override
-    public Role getRole(String roleName) {
+    public Role getRole(String userRole) {
         return entityManager
-                .createQuery("select r from Role r where r.name =: name", Role.class)
-                .setParameter("name", roleName)
+                .createQuery("select r from Role r where r.role =: userRole", Role.class)
+                .setParameter("userRole", userRole)
                 .getSingleResult();
     }
 
     @Override
-    public Role getRoleById(int id) {
+    public Role getRoleById(Long id) {
         return entityManager.find(Role.class, id);
     }
 
@@ -38,13 +40,4 @@ public class RoleDAOImpl implements RoleDAO {
     public void addRole(Role role) {
         entityManager.persist(role);
     }
-
-    @Override
-    public List<Role> getRolesByIds(List<Integer> roleIds) {
-        return entityManager
-                .createQuery("select r from Role r where r.id in :ids", Role.class)
-                .setParameter("ids", roleIds)
-                .getResultList();
-    }
-
 }
