@@ -1,73 +1,60 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.models.User;
-import java.util.List;
 
+import javax.validation.Valid;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-    private final UserDAO usersRepo;
+    private final UserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDAO usersRepo) {
-        this.usersRepo = usersRepo;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> indexUsers() {
-        return usersRepo.indexUsers();
+    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
+        this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
-    public void add(User user) {
-        usersRepo.add(user);
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDAO.saveUser(user);
     }
 
     @Override
     @Transactional
-    public void delete(int id) {
-        usersRepo.delete(id);
-    }
-
-    @Override
-    @Transactional
-    public void edit(User user) {
-        usersRepo.edit(user);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public User getById(int id) {
-        return usersRepo.getUserById(id);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public User findByUsername(String name) {
-        return usersRepo.getUserByName(name);
-    }
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User %s not found", username));
+    public void updateUser(@Valid User user) {
+        if (!user.getPassword().equals(userDAO.getUserById(user.getUserId()).getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                (user.getRoles()).stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList());
+        userDAO.updateUser(user);
     }
 
+    @Override
+    @Transactional
+    public void deleteUser(long id) {
+        userDAO.deleteUser(id);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userDAO.getUserByLogin(login);
+    }
+
+    @Override
+    public User getUserById(long id) {
+        return userDAO.getUserById(id);
+    }
 }
