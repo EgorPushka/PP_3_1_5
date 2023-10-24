@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="EN">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="shortcut icon" href="/js_icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{js/scripts.js}"  src="../static/js/scripts.js"></script>
+    <title>Users</title>
+    <meta name="theme-color" content="#7952b3">
+    <style>
+        .row {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            padding-right: 1px;
+            text-align: center;
+        }
+        .navbar {
+            height: 60px;
+        }
+        .list-group-item{
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .list-group{
+            padding-top: 1px;
+        }
+        .form-control {
+            max-width: 300px;
+            max-height: 40px;
+            font-size: 16px;
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        #newUser{
+            font-weight: bold;
+        }
+        .select{
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+        <div class="nav justify-content-left">
+        <span class="navbar-text" id="info">
+        </span>
+        </div>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/logout'}" style="color: #ffffff">Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-2">
+                <ul class="list-group list-group-flush">
+                    <li>
+                    <a sec:authorize="hasAuthority('ROLE_ADMIN')"  class="list-group-item" id="adminTab"
+                           href="#adminTable" data-toggle="tab">Admin</a>
+                    </li>
+                    <li>
+                    <a class="list-group-item" id="userTab"
+                       href="#userTable" data-toggle="tab">User</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-10">
+                <h1 className="h1 a1" id="h1a1"></h1>
+                <div class="tabs">
+                    <ul sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#adminTable" data-toggle="tab">Users table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#newUser" data-toggle="tab">New user</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content border">
+                    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" class="tab-pane fade" id="adminTable">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <div class="navbar-brand">All users</div>
+                        </nav>
+                        <div>
+                            <table class="table table-striped" id="tableAllUsers">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Login</th>
+                                    <th>Name</th>
+                                    <th>Lastname</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="userTable">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <div class="navbar-brand">About user</div>
+                        </nav>
+                        <div>
+                            <table class="table table-striped" id="tableUser" >
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Login</th>
+                                    <th>Name</th>
+                                    <th>Lastname</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade text-center" id="newUser">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <div class="navbar-brand">Add new user</div>
+                        </nav>
+
+                        <form id="addForm">
+
+                            <div class="form-group">
+                                <label for="usernameCreate" class="col-form-label">Login</label>
+                                <input type="text" class="form-control username" id="usernameCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="passwordCreate" class="com-form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nameCreate" class="com-form-label">Name</label>
+                                <input type="text" class="form-control" id="nameCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="surnameCreate" class="com-form-label">Lastname</label>
+                                <input type="text" class="form-control" id="surnameCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ageCreate" class="com-form-label">Age</label>
+                                <input type="number" class="form-control" id="ageCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailCreate" class="com-form-label">Email</label>
+                                <input type="text" class="form-control" id="emailCreate">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rolesCreate" class="com-form-label">Role:</label>
+                                <select multiple id="rolesCreate" class="form-control select" size="2">
+                                    <option value="ROLE_USER">USER</option>
+                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                </select>
+                            </div>
+                        </form>
+                        <div class="p2">
+                            <button class="btn btn-success" id="addUser" type="submit">Add new user</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="someDefaultModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                    </div>
+
+                    <div class="modal-footer">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

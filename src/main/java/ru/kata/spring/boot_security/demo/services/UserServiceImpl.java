@@ -57,4 +57,5 @@ public class UserServiceImpl implements UserService {
     public User getUserById(long id) {
         return userDAO.getUserById(id);
     }
+
 }

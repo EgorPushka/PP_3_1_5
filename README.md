@@ -1,9 +1,9 @@
 <div style="text-align: center;">
-  <h2>Welcome to Your Spring Security Project with Bootstrap </h2>
-  <h2>PP 3.1.4 </h2>
+  <h2>Welcome to Your Spring REST API </h2>
+  <h2>PP 3.1.5 </h2>
 </div>
 
-This Spring Security project is a product of our learning journey at [Kata Academy](https://kata.academy/). It's a practical demonstration of Spring Security combined with Bootstrap, allowing you to perform CRUD operations on a database.
+This Spring Security project is a product of our learning journey at [Kata Academy](https://kata.academy/). It's a practical demonstration of Spring Security REST API combined with JavaScript/Bootstrap, allowing you to perform CRUD operations on a database.
 
 <div style="text-align: center;">
   <h3>Test Users</h3>
